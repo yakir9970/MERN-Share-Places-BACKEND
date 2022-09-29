@@ -19,7 +19,9 @@
   "homepage": "https://github.com/yakir9970/MERN-Share-Places-BACKEND#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
