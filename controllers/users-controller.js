@@ -20,7 +20,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("Invalid Input!", 422));
   }
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -38,7 +38,7 @@ const signup = async (req, res, next) => {
     email,
     image: "https://media.timeout.com/images/101705309/image.jpg",
     password,
-    places,
+    places: [],
   });
 
   try {
