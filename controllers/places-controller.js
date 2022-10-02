@@ -6,6 +6,8 @@ const HttpError = require("../models/http-error");
 
 const getCoordsForAddress = require("../util/location");
 
+const Place = require("../models/place");
+
 let DUMMY = [
   {
     id: "p1",
@@ -45,28 +47,39 @@ let DUMMY = [
   },
 ];
 
-const getPlaceById = (req, res, next) => {
+const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid; //holds object: {pid:"p1"}
-  const place = DUMMY.find((p) => {
-    return p.id === placeId;
-  });
+  let place;
+  try {
+    place = await Place.findById(placeId);
+  } catch (error) {
+    const err = new HttpError("Could not find a place", 500);
+    return next(err);
+  }
   if (!place) {
     return next(new HttpError("No place found!", 404));
   }
-  res.json({ place });
+  res.json({ place: place.toObject({ getters: true }) });
 };
 
-const getPlacesByUserId = (req, res, next) => {
+const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid; //holds object: {uid:"u1"}
-  const places = DUMMY.filter((p) => {
-    return p.creator === userId;
-  });
+  let places;
+  try {
+    places = await Place.find({ creator: userId });
+  } catch (error) {
+    const err = new HttpError("Could not find places by user Id", 500);
+    return next(err);
+  }
+
   if (!places || places.length === 0) {
     return next(
       new HttpError("No places found for user id:" + userId + "!", 404)
     );
   }
-  res.json({ places });
+  res.json({
+    places: places.map((place) => place.toObject({ getters: true })),
+  });
 };
 
 const createPlace = async (req, res, next) => {
@@ -84,16 +97,20 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  const createdPlace = {
-    id: uuidv4(),
+  const createdPlace = new Place({
     title,
     description,
-    location: coordinates,
     address,
+    location: coordinates,
+    image: "https://media.timeout.com/images/101705309/image.jpg",
     creator,
-  };
-
-  DUMMY.push(createdPlace);
+  });
+  try {
+    await createdPlace.save();
+  } catch (error) {
+    const err = new HttpError("Creating place failed, please try again", 500);
+    return next(err);
+  }
 
   res.status(201).json({ place: createdPlace });
 };
