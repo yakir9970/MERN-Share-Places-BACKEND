@@ -36,7 +36,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image: "https://media.timeout.com/images/101705309/image.jpg",
+    image: req.file.path,
     password,
     places: [],
   });
