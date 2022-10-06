@@ -85,7 +85,7 @@ const login = async (req, res, next) => {
   }
 
   if (!existingUser) {
-    return next(new HttpError("Email or Password is Incorrect!", 401));
+    return next(new HttpError("Email or Password is Incorrect!", 403));
   }
 
   let isValidPassword = false;
@@ -96,7 +96,7 @@ const login = async (req, res, next) => {
   }
 
   if (!isValidPassword) {
-    return next(new HttpError("Invalid Inputs!", 401));
+    return next(new HttpError("Invalid Inputs!", 403));
   }
 
   let token;
