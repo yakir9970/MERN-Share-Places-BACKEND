@@ -1,0 +1,10 @@
+{
+    "env": {
+        "DB_USER": "yakirtravish",
+        "DB_PASSWORD": "1581997h",
+        "DB_NAME": "MERN",
+        "PORT":5000,
+        "LOCATION_API_KEY":"d16e202d8ef68877a9c3193282e38bd2",
+        "TOKEN_KAY":"supersecret_dont_share"
+    }
+}

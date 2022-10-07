@@ -5,7 +5,7 @@ const HttpError = require("../models/http-error");
 async function getCoordsForAddress(address) {
   let data;
   const params = {
-    access_key: "d16e202d8ef68877a9c3193282e38bd2",
+    access_key: process.env.LOCATION_API_KEY,
     query: address,
   };
   await axios
